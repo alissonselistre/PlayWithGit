@@ -8,13 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		3BDCDA5D1F013AA5001FD640 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDA5C1F013AA5001FD640 /* AppDelegate.swift */; };
-		3BDCDA5F1F013AA5001FD640 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDA5E1F013AA5001FD640 /* ViewController.swift */; };
+		3BDCDA5F1F013AA5001FD640 /* UserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDA5E1F013AA5001FD640 /* UserListViewController.swift */; };
 		3BDCDA621F013AA5001FD640 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BDCDA601F013AA5001FD640 /* Main.storyboard */; };
 		3BDCDA651F013AA5001FD640 /* PlayWithGit.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDA631F013AA5001FD640 /* PlayWithGit.xcdatamodeld */; };
 		3BDCDA671F013AA5001FD640 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3BDCDA661F013AA5001FD640 /* Assets.xcassets */; };
 		3BDCDA6A1F013AA5001FD640 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3BDCDA681F013AA5001FD640 /* LaunchScreen.storyboard */; };
 		3BDCDA751F013AA5001FD640 /* PlayWithGitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDA741F013AA5001FD640 /* PlayWithGitTests.swift */; };
 		3BDCDA801F013AA5001FD640 /* PlayWithGitUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDA7F1F013AA5001FD640 /* PlayWithGitUITests.swift */; };
+		3BDCDA8E1F014F79001FD640 /* UserTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BDCDA8D1F014F79001FD640 /* UserTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,7 +38,7 @@
 /* Begin PBXFileReference section */
 		3BDCDA591F013AA5001FD640 /* PlayWithGit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PlayWithGit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BDCDA5C1F013AA5001FD640 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		3BDCDA5E1F013AA5001FD640 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		3BDCDA5E1F013AA5001FD640 /* UserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListViewController.swift; sourceTree = "<group>"; };
 		3BDCDA611F013AA5001FD640 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		3BDCDA641F013AA5001FD640 /* PlayWithGit.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = PlayWithGit.xcdatamodel; sourceTree = "<group>"; };
 		3BDCDA661F013AA5001FD640 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -49,6 +50,7 @@
 		3BDCDA7B1F013AA5001FD640 /* PlayWithGitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PlayWithGitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BDCDA7F1F013AA5001FD640 /* PlayWithGitUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayWithGitUITests.swift; sourceTree = "<group>"; };
 		3BDCDA811F013AA5001FD640 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3BDCDA8D1F014F79001FD640 /* UserTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,12 +102,13 @@
 			isa = PBXGroup;
 			children = (
 				3BDCDA5C1F013AA5001FD640 /* AppDelegate.swift */,
-				3BDCDA5E1F013AA5001FD640 /* ViewController.swift */,
+				3BDCDA5E1F013AA5001FD640 /* UserListViewController.swift */,
 				3BDCDA601F013AA5001FD640 /* Main.storyboard */,
 				3BDCDA661F013AA5001FD640 /* Assets.xcassets */,
 				3BDCDA681F013AA5001FD640 /* LaunchScreen.storyboard */,
 				3BDCDA6B1F013AA5001FD640 /* Info.plist */,
 				3BDCDA631F013AA5001FD640 /* PlayWithGit.xcdatamodeld */,
+				3BDCDA8D1F014F79001FD640 /* UserTableViewCell.swift */,
 			);
 			path = PlayWithGit;
 			sourceTree = "<group>";
@@ -265,7 +268,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3BDCDA5F1F013AA5001FD640 /* ViewController.swift in Sources */,
+				3BDCDA8E1F014F79001FD640 /* UserTableViewCell.swift in Sources */,
+				3BDCDA5F1F013AA5001FD640 /* UserListViewController.swift in Sources */,
 				3BDCDA651F013AA5001FD640 /* PlayWithGit.xcdatamodeld in Sources */,
 				3BDCDA5D1F013AA5001FD640 /* AppDelegate.swift in Sources */,
 			);
