@@ -11,8 +11,8 @@ import UIKit
 class UserTableViewCell: UITableViewCell {
 
     @IBOutlet weak var avatarImageView: UIImageView!
-    @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var usernameLabel: UILabel!
+    @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var followersButton: UIButton!
     @IBOutlet weak var followingButton: UIButton!
     
@@ -40,7 +40,7 @@ class UserTableViewCell: UITableViewCell {
     
     private func resetUI() {
         avatarImageView.image = UIImage(named: "placeholder_profile")
-        nameLabel.text = "Name"
         usernameLabel.text = "username"
+        idLabel.text = ""
     }
 }
