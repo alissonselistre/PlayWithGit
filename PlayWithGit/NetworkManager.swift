@@ -12,9 +12,28 @@ class NetworkManager {
     
     //MARK: private
     
-    private static let BASE_URL = "https://api.github.com/users"
+    private static let BASE_URL = "https://api.github.com"
     
     private static var cache: NSCache<NSString, UIImage> = NSCache()
+    
+    private class func executeRequest(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+
+        var request = URLRequest(url: url)
+
+        if let username = sessionUsername, let password = sessionPassword {
+
+            let credentialsData = "\(username):\(password)".data(using: String.Encoding.utf8)
+            
+            if let credentialsInBase64 = credentialsData?.base64EncodedString(options: []) {
+                let authorization = "Basic \(credentialsInBase64)"
+                request.addValue(authorization, forHTTPHeaderField: "Authorization")
+            }
+        }
+        
+        URLSession.shared.dataTask(with: request) { (data, response, error) in
+            completion(data, response, error)
+        }.resume()
+    }
     
     //MARK: public network methods
     
@@ -22,14 +41,43 @@ class NetworkManager {
     static var sessionPassword: String?
     static var loggedUser: User?
     
+    class func loginWithCredentials(username: String, password: String, completion: @escaping (_ success: Bool) -> Void) {
+        
+        guard let url = URL(string: BASE_URL) else {
+            completion(false)
+            return
+        }
+        
+        sessionUsername = username
+        sessionPassword = password
+        
+        executeRequest(url: url) { (data, response, error) in
+            
+            var success = false
+            
+            defer {
+                DispatchQueue.main.sync {
+                    completion(success)
+                }
+            }
+            
+            if error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
+                success = true
+            } else {
+                sessionUsername = nil
+                sessionPassword = nil
+            }
+        }
+    }
+    
     class func getUserForUsername(username: String, completion: @escaping (_ user: User?) -> Void) {
         
-        guard let url = URL(string: "\(BASE_URL)/\(username)") else {
+        guard let url = URL(string: "\(BASE_URL)/users/\(username)") else {
             completion(nil)
             return
         }
         
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+        executeRequest(url: url) { (data, response, error) in
             
             var user: User?
             
@@ -55,18 +103,17 @@ class NetworkManager {
                     print("Error when parsing the JSON: \(error)")
                 }
             }
-            
-        }.resume()
+        }
     }
     
     class func getFollowersForUsername(username: String, completion: @escaping ([User]) -> Void) {
 
-        guard let url = URL(string: "\(BASE_URL)/\(username)/followers") else {
+        guard let url = URL(string: "\(BASE_URL)/users/\(username)/followers") else {
             completion([])
             return
         }
         
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+        executeRequest(url: url) { (data, response, error) in
             
             var followingList: [User] = []
             
@@ -94,18 +141,17 @@ class NetworkManager {
                     print("Error when parsing the JSON: \(error)")
                 }
             }
-            
-        }.resume()
+        }
     }
     
     class func getFollowingForUsername(username: String, completion: @escaping ([User]) -> Void) {
 
-        guard let url = URL(string: "\(BASE_URL)/\(username)/following") else {
+        guard let url = URL(string: "\(BASE_URL)/users/\(username)/following") else {
             completion([])
             return
         }
         
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+        executeRequest(url: url) { (data, response, error) in
             
             var followingList: [User] = []
             
@@ -134,8 +180,7 @@ class NetworkManager {
                     print("Error when parsing the JSON: \(error)")
                 }
             }
-            
-        }.resume()
+        }
     }
     
     class func getAvatarForUser(user: User, completion: @escaping (UIImage?) -> Void) {
@@ -148,7 +193,7 @@ class NetworkManager {
         if let image = NetworkManager.cache.object(forKey: user.id as NSString) {
             completion(image)
         } else {
-            URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+            executeRequest(url: url) { (data, response, error) in
                 
                 var image: UIImage?
                 
@@ -163,7 +208,7 @@ class NetworkManager {
                     print("Error downloading image with url: \(url.absoluteString)")
                 }
                 
-            }.resume()
+            }
         }
     }
     
@@ -174,7 +219,7 @@ class NetworkManager {
             return
         }
         
-        URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+        executeRequest(url: url) { (data, response, error) in
             
             var repositoriesList: [Repository] = []
             
@@ -202,8 +247,7 @@ class NetworkManager {
                     print("Error when parsing the JSON: \(error)")
                 }
             }
-            
-        }.resume()
+        }
     }
     
     //MARK: helpers

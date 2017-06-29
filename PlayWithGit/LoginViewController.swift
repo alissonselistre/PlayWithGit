@@ -63,16 +63,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             guard let username = usernameTextField.text else { return }
             guard let password = passwordTextField.text else { return }
             
-            NetworkManager.getUserForUsername(username: username, completion: { (user) in
+            NetworkManager.loginWithCredentials(username: username, password: password, completion: { (success) in
                 
-                if let user = user {
+                if (success) {
                     
-                    NetworkManager.loggedUser = user
-                    NetworkManager.sessionUsername = username
-                    NetworkManager.sessionPassword = password
-                    
-                    self.dismiss(animated: true, completion: nil)
-                    
+                    NetworkManager.getUserForUsername(username: username, completion: { (user) in
+                        
+                        if let user = user {
+                            
+                            NetworkManager.loggedUser = user
+                            
+                            self.dismiss(animated: true, completion: nil)
+                            
+                        } else {
+                            Alert.showErrorMessage(message: "Error when retrieving the user information.")
+                        }
+                    })
                 } else {
                     Alert.showErrorMessage(message: "User not found")
                 }

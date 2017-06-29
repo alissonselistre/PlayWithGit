@@ -29,9 +29,7 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         super.viewWillAppear(animated)
         
         if NetworkManager.isLoginRequired() {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
-            present(loginViewController, animated: true, completion: nil)
+            showLoginView()
         } else {
             
             if let user = user {
@@ -42,9 +40,40 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         }
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "UserListSegueIdentifier" {
+            
+            guard let userList = sender as? [User] else { return }
+            guard let userListViewController = segue.destination as? UserListViewController else { return }
+            
+            userListViewController.userList = userList
+        }
+    }
+    
     private func configureUI() {
         avatarImageView.layer.masksToBounds = true
         avatarImageView.layer.cornerRadius = avatarImageView.frame.width/2
+    }
+    
+    //MARK: actions
+    
+    @IBAction func FollowersButtonPressed(_ sender: UIButton) {
+        
+        if let user = user {
+            NetworkManager.getFollowersForUsername(username: user.username) { (followers) in
+                
+            }
+        }
+    }
+    
+    @IBAction func FollowingButtonPressed(_ sender: UIButton) {
+        
+        if let user = user {
+            NetworkManager.getFollowingForUsername(username: user.username) { (following) in
+                
+            }
+        }
     }
     
     //MARK: UITableViewDataSource
@@ -93,5 +122,15 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
                 }
             }
         }
+    }
+    
+    private func showLoginView() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+        present(loginViewController, animated: true, completion: nil)
+    }
+    
+    private func showUserListView(userList: [User]) {
+        performSegue(withIdentifier: "UserListSegueIdentifier", sender: userList)
     }
 }

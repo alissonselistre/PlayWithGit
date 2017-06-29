@@ -15,7 +15,7 @@ struct User {
     var avatarUrl = ""
     var repositoriesUrl = ""
     
-    mutating func populateWithDict(dict: [String:Any]) {
+    mutating func populateWithDict(dict: [String: Any]) {
         
         if let id = dict["id"] as? NSNumber {
             self.id = id.stringValue

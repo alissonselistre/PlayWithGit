@@ -12,19 +12,13 @@ class UserListViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet weak var tableView: UITableView!
     
-    private var userList: [User] = []
+    var userList: [User] = []
     
     //MARK: view methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        NetworkManager.getUserForUsername(username:"alissonselistre") { (user) in
-            if let user = user {
-                self.userList = [user]
-                self.tableView.reloadData()
-            }
-        }
+
     }
 
     //MARK: UITableViewDataSource
