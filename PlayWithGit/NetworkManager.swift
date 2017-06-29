@@ -22,7 +22,7 @@ class NetworkManager {
     static var sessionPassword: String?
     static var loggedUser: User?
     
-    class func getUserForUsername(username: String, completion: @escaping (User?) -> Void) {
+    class func getUserForUsername(username: String, completion: @escaping (_ user: User?) -> Void) {
         
         guard let url = URL(string: "\(BASE_URL)/\(username)") else {
             completion(nil)
@@ -39,8 +39,8 @@ class NetworkManager {
                 }
             }
             
-            if let data = data, error == nil {
-                
+            if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
+
                 do {
                     
                     let json = try JSONSerialization.jsonObject(with: data) as! [String:Any]
@@ -74,7 +74,7 @@ class NetworkManager {
                 completion(followingList)
             }
             
-            if let data = data, error == nil {
+            if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
                 
                 do {
                     
@@ -113,7 +113,7 @@ class NetworkManager {
                 completion(followingList)
             }
             
-            if let data = data, error == nil {
+            if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
                 
                 do {
                     
@@ -156,7 +156,7 @@ class NetworkManager {
                     completion(image)
                 }
                 
-                if let data = data, let downloadedImage = UIImage(data: data) {
+                if let data = data, let downloadedImage = UIImage(data: data), (response as? HTTPURLResponse)?.statusCode == 200 {
                     image = downloadedImage
                     NetworkManager.cache.setObject(downloadedImage, forKey: user.id as NSString)
                 } else {
@@ -182,11 +182,11 @@ class NetworkManager {
                 completion(repositoriesList)
             }
             
-            if let data = data, error == nil {
+            if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
                 
                 do {
                     
-                    let json = try JSONSerialization.jsonObject(with: data) as! [[String:String]]
+                    let json = try JSONSerialization.jsonObject(with: data) as! [[String:Any]]
                     
                     print("JSON downloaded properly.")
                     
@@ -203,7 +203,7 @@ class NetworkManager {
                 }
             }
             
-            }.resume()
+        }.resume()
     }
     
     //MARK: helpers

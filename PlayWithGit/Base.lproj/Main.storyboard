@@ -92,6 +92,11 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="descriptionLabel" destination="Q20-Ub-Jmr" id="TgG-47-pEf"/>
+                                            <outlet property="languageLabel" destination="e4N-Rj-buq" id="X2E-Ea-kh8"/>
+                                            <outlet property="nameLabel" destination="DfZ-X6-EEU" id="SGq-F3-KlG"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -140,6 +145,7 @@
                     <connections>
                         <outlet property="avatarImageView" destination="8M5-Xv-rvs" id="ODc-v1-Kwq"/>
                         <outlet property="repositoriesTableView" destination="RbC-Le-lEO" id="l9W-oO-iXA"/>
+                        <outlet property="usernameLabel" destination="5XU-gJ-psF" id="RxP-Rt-qjw"/>
                         <segue destination="BYZ-38-t0r" kind="show" identifier="UserListSegueIdentifier" id="fpv-bK-kqu"/>
                     </connections>
                 </viewController>
@@ -173,6 +179,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="next"/>
+                                <connections>
+                                    <outlet property="delegate" destination="oai-nF-qiG" id="WH3-jo-aGi"/>
+                                </connections>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PkS-CO-bgi">
                                 <rect key="frame" x="16" y="356" width="343" height="30"/>
@@ -190,6 +199,9 @@
                                         <integer key="value" value="5"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="goButtonPressed:" destination="oai-nF-qiG" eventType="touchUpInside" id="0qa-ea-aJ1"/>
+                                </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="password" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vqO-al-5AM">
                                 <rect key="frame" x="16" y="318.5" width="343" height="30"/>
@@ -199,6 +211,9 @@
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" returnKeyType="go" secureTextEntry="YES"/>
+                                <connections>
+                                    <outlet property="delegate" destination="oai-nF-qiG" id="uJh-Hf-gUh"/>
+                                </connections>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.9539981723930181" blue="0.93887247903787374" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -217,6 +232,10 @@
                             <constraint firstItem="PkS-CO-bgi" firstAttribute="trailing" secondItem="R1T-xF-DdW" secondAttribute="trailingMargin" id="pbT-5T-b5L"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="passwordTextField" destination="vqO-al-5AM" id="8gk-Pd-CCs"/>
+                        <outlet property="usernameTextField" destination="44g-uO-esd" id="cWE-vk-BUO"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZWB-KB-soq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

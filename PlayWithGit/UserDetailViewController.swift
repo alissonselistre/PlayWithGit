@@ -11,6 +11,7 @@ import UIKit
 class UserDetailViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var repositoriesTableView: UITableView!
     
     var user: User?
@@ -30,7 +31,7 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         if NetworkManager.isLoginRequired() {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
-            present(loginViewController, animated: false, completion: nil)
+            present(loginViewController, animated: true, completion: nil)
         } else {
             
             if let user = user {
@@ -62,12 +63,19 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         
         let repository = repositories[indexPath.row]
         
+        cell.nameLabel.text = repository.name
+        cell.descriptionLabel.text = repository.description
+        cell.languageLabel.text = repository.language
+        
         return cell
     }
     
     //MARK: helpers
     
     private func getUserInformationAndUpdateUI(user: User) {
+        
+        usernameLabel.text = user.username
+        
         NetworkManager.getAvatarForUser(user: user) { (image) in
             guard let image = image else { return }
             
