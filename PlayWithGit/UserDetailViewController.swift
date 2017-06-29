@@ -11,6 +11,10 @@ import UIKit
 class UserDetailViewController: UIViewController, UITableViewDataSource {
 
     @IBOutlet weak var avatarImageView: UIImageView!
+    @IBOutlet weak var repositoriesTableView: UITableView!
+    
+    var user: User?
+    var repositories: [Repository] = []
     
     //MARK: view methods
     
@@ -23,7 +27,18 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
+        if NetworkManager.isLoginRequired() {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+            present(loginViewController, animated: false, completion: nil)
+        } else {
+            
+            if let user = user {
+                getUserInformationAndUpdateUI(user: user)
+            } else if let loggedUser = NetworkManager.loggedUser {
+                getUserInformationAndUpdateUI(user: loggedUser)
+            }
+        }
     }
     
     private func configureUI() {
@@ -38,13 +53,37 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 3
+        return repositories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "RepositoryCellIdentifier", for: indexPath) as! RepositoryTableViewCell
         
+        let repository = repositories[indexPath.row]
+        
         return cell
+    }
+    
+    //MARK: helpers
+    
+    private func getUserInformationAndUpdateUI(user: User) {
+        NetworkManager.getAvatarForUser(user: user) { (image) in
+            guard let image = image else { return }
+            
+            DispatchQueue.main.sync {
+                self.avatarImageView.image = image
+            }
+        }
+        
+        NetworkManager.getRepositoriesForUser(user: user) { (repositories) in
+            if repositories.count > 0 {
+                
+                DispatchQueue.main.sync {
+                    self.repositories = repositories
+                    self.repositoriesTableView.reloadData()
+                }
+            }
+        }
     }
 }

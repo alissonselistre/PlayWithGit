@@ -8,8 +8,6 @@
 
 import UIKit
 
-let DEFAULT_USER = "alissonselistre"
-
 class NetworkManager {
     
     //MARK: private
@@ -18,10 +16,11 @@ class NetworkManager {
     
     private static var cache: NSCache<NSString, UIImage> = NSCache()
     
-    //MARK: public
+    //MARK: public network methods
     
-    static var sessionUsername = "alissonselistre" // this pre-set is temporary because it will be populated by the Login Screen
-    static var sessionPassword = "blablabla"
+    static var sessionUsername: String?
+    static var sessionPassword: String?
+    static var loggedUser: User?
     
     class func getUserForUsername(username: String, completion: @escaping (User?) -> Void) {
         
@@ -166,5 +165,51 @@ class NetworkManager {
                 
             }.resume()
         }
+    }
+    
+    class func getRepositoriesForUser(user: User, completion: @escaping ([Repository]) -> Void) {
+        
+        guard let url = URL(string: user.repositoriesUrl) else {
+            completion([])
+            return
+        }
+        
+        URLSession.shared.dataTask(with: URLRequest(url: url)) { (data, response, error) in
+            
+            var repositoriesList: [Repository] = []
+            
+            defer {
+                completion(repositoriesList)
+            }
+            
+            if let data = data, error == nil {
+                
+                do {
+                    
+                    let json = try JSONSerialization.jsonObject(with: data) as! [[String:String]]
+                    
+                    print("JSON downloaded properly.")
+                    
+                    for RepoDict in json {
+                        
+                        var repository = Repository()
+                        repository.populateWithDict(dict: RepoDict)
+                        
+                        repositoriesList.append(repository)
+                    }
+                    
+                } catch {
+                    print("Error when parsing the JSON: \(error)")
+                }
+            }
+            
+            }.resume()
+    }
+    
+    //MARK: helpers
+    
+    class func isLoginRequired() -> Bool {
+        let loginRequired = (sessionUsername == nil || sessionPassword == nil)
+        return loginRequired
     }
 }
