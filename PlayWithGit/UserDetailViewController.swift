@@ -20,6 +20,12 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         configureUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+    }
+    
     private func configureUI() {
         avatarImageView.layer.masksToBounds = true
         avatarImageView.layer.cornerRadius = avatarImageView.frame.width/2

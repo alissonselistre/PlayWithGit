@@ -20,6 +20,9 @@ class NetworkManager {
     
     //MARK: public
     
+    static var sessionUsername = "alissonselistre" // this pre-set is temporary because it will be populated by the Login Screen
+    static var sessionPassword = "blablabla"
+    
     class func getUserForUsername(username: String, completion: @escaping (User?) -> Void) {
         
         guard let url = URL(string: "\(BASE_URL)/\(username)") else {

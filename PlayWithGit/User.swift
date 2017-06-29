@@ -6,7 +6,7 @@
 //  Copyright © 2017 Alisson Selistre. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 struct User {
     var id = ""
@@ -14,7 +14,11 @@ struct User {
     var avatarUrl = ""
     
     mutating func populateWithDict(dict: [String:Any]) {
-        id = dict["id"] as? String ?? ""
+        
+        if let id = dict["id"] as? NSNumber {
+            self.id = id.stringValue
+        }
+
         username = dict["login"] as? String ?? ""
         avatarUrl = dict["avatar_url"] as? String ?? ""
     }
