@@ -13,8 +13,7 @@ class UserTableViewCell: UITableViewCell {
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var idLabel: UILabel!
-    @IBOutlet weak var followersButton: UIButton!
-    @IBOutlet weak var followingButton: UIButton!
+    @IBOutlet weak var followButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,11 +30,8 @@ class UserTableViewCell: UITableViewCell {
         avatarImageView.layer.masksToBounds = true
         avatarImageView.layer.cornerRadius = avatarImageView.frame.height/2
         
-        followersButton.layer.masksToBounds = true
-        followersButton.layer.cornerRadius = 8
-        
-        followingButton.layer.masksToBounds = true
-        followingButton.layer.cornerRadius = 8
+        followButton.layer.masksToBounds = true
+        followButton.layer.cornerRadius = 8
     }
     
     private func resetUI() {

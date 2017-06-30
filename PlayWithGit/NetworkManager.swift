@@ -10,18 +10,26 @@ import UIKit
 
 class NetworkManager {
     
-    //MARK: private
+    //MARK: private vars
     
     private static let BASE_URL = "https://api.github.com"
     
     private static var cache: NSCache<NSString, UIImage> = NSCache()
     
+    //MARK: public vars
+    
+    static var sessionUsername: String?
+    static var sessionPassword: String?
+    static var loggedUser: User?
+    
+    //MARK: private network methods
+    
     private class func executeRequest(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
-
+        
         var request = URLRequest(url: url)
-
+        
         if let username = sessionUsername, let password = sessionPassword {
-
+            
             let credentialsData = "\(username):\(password)".data(using: String.Encoding.utf8)
             
             if let credentialsInBase64 = credentialsData?.base64EncodedString(options: []) {
@@ -32,14 +40,10 @@ class NetworkManager {
         
         URLSession.shared.dataTask(with: request) { (data, response, error) in
             completion(data, response, error)
-        }.resume()
+            }.resume()
     }
     
     //MARK: public network methods
-    
-    static var sessionUsername: String?
-    static var sessionPassword: String?
-    static var loggedUser: User?
     
     class func loginWithCredentials(username: String, password: String, completion: @escaping (_ success: Bool) -> Void) {
         
@@ -56,9 +60,7 @@ class NetworkManager {
             var success = false
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(success)
-                }
+                completion(success)
             }
             
             if error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -82,16 +84,14 @@ class NetworkManager {
             var user: User?
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(user)
-                }
+                completion(user)
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
 
                 do {
                     
-                    let json = try JSONSerialization.jsonObject(with: data) as! [String:Any]
+                    let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
                     
                     print("JSON downloaded properly.")
                     
@@ -125,14 +125,14 @@ class NetworkManager {
                 
                 do {
                     
-                    let json = try JSONSerialization.jsonObject(with: data) as! [[String:String]]
+                    let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
                     
                     print("JSON downloaded properly.")
                     
-                    for UserDict in json {
+                    for userDict in json {
                         
                         var user = User()
-                        user.populateWithDict(dict: UserDict)
+                        user.populateWithDict(dict: userDict)
                         
                         followingList.append(user)
                     }
@@ -163,15 +163,14 @@ class NetworkManager {
                 
                 do {
                     
-                    let json = try JSONSerialization.jsonObject(with: data) as! [[String:String]]
+                    let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
                     
                     print("JSON downloaded properly.")
                     
-                    for UserDict in json {
+                    for userDict in json {
                         
                         var user = User()
-                        user.id = UserDict["id"] ?? ""
-                        user.username = UserDict["login"] ?? ""
+                        user.populateWithDict(dict: userDict)
                         
                         followingList.append(user)
                     }
@@ -231,7 +230,7 @@ class NetworkManager {
                 
                 do {
                     
-                    let json = try JSONSerialization.jsonObject(with: data) as! [[String:Any]]
+                    let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
                     
                     print("JSON downloaded properly.")
                     

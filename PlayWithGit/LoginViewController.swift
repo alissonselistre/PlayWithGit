@@ -76,11 +76,15 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             self.dismiss(animated: true, completion: nil)
                             
                         } else {
-                            Alert.showErrorMessage(message: "Error when retrieving the user information.")
+                            DispatchQueue.main.sync {
+                                Alert.showErrorMessage(message: "Error when retrieving the user information.")
+                            }
                         }
                     })
                 } else {
-                    Alert.showErrorMessage(message: "User not found")
+                    DispatchQueue.main.sync {
+                        Alert.showErrorMessage(message: "User not found")
+                    }
                 }
             })
         }

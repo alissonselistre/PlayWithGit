@@ -23,15 +23,16 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         super.viewDidLoad()
 
         configureUI()
+        
+        if NetworkManager.isLoginRequired() {
+            showLoginView()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if NetworkManager.isLoginRequired() {
-            showLoginView()
-        } else {
-            
+        if needsToPopulateUI() {
             if let user = user {
                 getUserInformationAndUpdateUI(user: user)
             } else if let loggedUser = NetworkManager.loggedUser {
@@ -54,6 +55,7 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
     private func configureUI() {
         avatarImageView.layer.masksToBounds = true
         avatarImageView.layer.cornerRadius = avatarImageView.frame.width/2
+        usernameLabel.text = nil
     }
     
     //MARK: actions
@@ -62,7 +64,13 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         
         if let user = user {
             NetworkManager.getFollowersForUsername(username: user.username) { (followers) in
-                
+                DispatchQueue.main.sync {
+                    if followers.count > 0 {
+                        self.performSegue(withIdentifier: "UserListSegueIdentifier", sender: followers)
+                    } else {
+                        Alert.showMessage(title: nil, message: "There is no followers to show =(")
+                    }
+                }
             }
         }
     }
@@ -71,7 +79,13 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         
         if let user = user {
             NetworkManager.getFollowingForUsername(username: user.username) { (following) in
-                
+                DispatchQueue.main.sync {
+                    if following.count > 0 {
+                        self.performSegue(withIdentifier: "UserListSegueIdentifier", sender: following)
+                    } else {
+                        Alert.showMessage(title: nil, message: "There is no following to show =(")
+                    }
+                }
             }
         }
     }
@@ -103,6 +117,8 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
     
     private func getUserInformationAndUpdateUI(user: User) {
         
+        self.user = user
+        
         usernameLabel.text = user.username
         
         NetworkManager.getAvatarForUser(user: user) { (image) in
@@ -124,10 +140,14 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         }
     }
     
+    private func needsToPopulateUI() -> Bool {
+        return (usernameLabel.text == nil)
+    }
+    
     private func showLoginView() {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
-        present(loginViewController, animated: true, completion: nil)
+        present(loginViewController, animated: false, completion: nil)
     }
     
     private func showUserListView(userList: [User]) {
