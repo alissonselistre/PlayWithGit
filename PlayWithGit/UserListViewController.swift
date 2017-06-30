@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserListViewController: UIViewController, UITableViewDataSource {
+class UserListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -19,6 +19,15 @@ class UserListViewController: UIViewController, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        if segue.identifier == "UserDetailSegueIdentifier" {
+            guard let user = sender as? User else { return }
+            guard let userDetailViewController = segue.destination as? UserDetailViewController else { return }
+            userDetailViewController.user = user
+        }
     }
 
     //MARK: UITableViewDataSource
@@ -48,6 +57,13 @@ class UserListViewController: UIViewController, UITableViewDataSource {
         }
         
         return cell
+    }
+    
+    //MARK: UITableViewDelegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let user = userList[indexPath.row]
+        performSegue(withIdentifier: "UserDetailSegueIdentifier", sender: user)
     }
 }
 
