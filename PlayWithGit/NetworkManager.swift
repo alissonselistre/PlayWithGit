@@ -37,10 +37,11 @@ class NetworkManager {
                 request.addValue(authorization, forHTTPHeaderField: "Authorization")
             }
         }
-        
+
         URLSession.shared.dataTask(with: request) { (data, response, error) in
+            logRequest(request: request, response: response as? HTTPURLResponse, data: data, error: error)
             completion(data, response, error)
-            }.resume()
+        }.resume()
     }
     
     //MARK: public network methods
@@ -96,9 +97,7 @@ class NetworkManager {
                 do {
                     
                     let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
-                    
-                    print("JSON downloaded properly.")
-                    
+
                     var newUser = User()
                     newUser.populateWithDict(dict: json)
                     user = newUser
@@ -132,9 +131,7 @@ class NetworkManager {
                 do {
                     
                     let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
-                    
-                    print("JSON downloaded properly.")
-                    
+
                     for userDict in json {
                         
                         var user = User()
@@ -172,9 +169,7 @@ class NetworkManager {
                 do {
                     
                     let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
-                    
-                    print("JSON downloaded properly.")
-                    
+
                     for userDict in json {
                         
                         var user = User()
@@ -244,8 +239,6 @@ class NetworkManager {
                     
                     let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
                     
-                    print("JSON downloaded properly.")
-                    
                     for RepoDict in json {
                         
                         var repository = Repository()
@@ -266,5 +259,46 @@ class NetworkManager {
     class func isLoginRequired() -> Bool {
         let loginRequired = (sessionUsername == nil || sessionPassword == nil)
         return loginRequired
+    }
+    
+    class func logRequest(request: URLRequest, response: HTTPURLResponse?, data: Data?, error: Error?) {
+        
+        let urlString = request.url?.absoluteString ?? ""
+        let httpMethod = request.httpMethod ?? ""
+
+        print("\n------------------------------")
+        
+        // url and method
+        print("REQUEST(\(httpMethod)): \(urlString)\n")
+        
+        // headers
+        print("REQUEST HEADERS:")
+        if let headersDict = request.allHTTPHeaderFields {
+            for key in headersDict.keys {
+                guard let value = headersDict[key] else { continue }
+                print("\(key) = \(value)")
+            }
+        }
+
+        // response
+        if let response = response {
+            print("\nRESPONSE(\(response.statusCode))")
+            
+            let contentType = response.allHeaderFields["Content-Type"] as? String ?? ""
+            
+            if let data = data, contentType.contains("application/json") {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data) as Any
+                    print(json)
+                } catch {
+                    print("Error when parsing the JSON: \(error)")
+                }
+            }
+            
+        } else {
+            print("\nNO RESPONSE")
+        }
+        
+        print("------------------------------")
     }
 }
