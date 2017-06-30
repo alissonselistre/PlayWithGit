@@ -15,6 +15,8 @@ class UserTableViewCell: UITableViewCell {
     @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
     
+    var user: User?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         configureUI()

@@ -64,12 +64,10 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         
         if let user = user {
             NetworkManager.getFollowersForUsername(username: user.username) { (followers) in
-                DispatchQueue.main.sync {
-                    if followers.count > 0 {
-                        self.performSegue(withIdentifier: "UserListSegueIdentifier", sender: followers)
-                    } else {
-                        Alert.showMessage(title: nil, message: "There is no followers to show =(")
-                    }
+                if followers.count > 0 {
+                    self.performSegue(withIdentifier: "UserListSegueIdentifier", sender: followers)
+                } else {
+                    Alert.showMessage(title: nil, message: "There is no followers to show =(")
                 }
             }
         }
@@ -79,12 +77,10 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         
         if let user = user {
             NetworkManager.getFollowingForUsername(username: user.username) { (following) in
-                DispatchQueue.main.sync {
-                    if following.count > 0 {
-                        self.performSegue(withIdentifier: "UserListSegueIdentifier", sender: following)
-                    } else {
-                        Alert.showMessage(title: nil, message: "There is no following to show =(")
-                    }
+                if following.count > 0 {
+                    self.performSegue(withIdentifier: "UserListSegueIdentifier", sender: following)
+                } else {
+                    Alert.showMessage(title: nil, message: "There is no following to show =(")
                 }
             }
         }
@@ -123,19 +119,13 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         
         NetworkManager.getAvatarForUser(user: user) { (image) in
             guard let image = image else { return }
-            
-            DispatchQueue.main.sync {
-                self.avatarImageView.image = image
-            }
+            self.avatarImageView.image = image
         }
         
         NetworkManager.getRepositoriesForUser(user: user) { (repositories) in
             if repositories.count > 0 {
-                
-                DispatchQueue.main.sync {
-                    self.repositories = repositories
-                    self.repositoriesTableView.reloadData()
-                }
+                self.repositories = repositories
+                self.repositoriesTableView.reloadData()
             }
         }
     }

@@ -37,8 +37,15 @@ class UserListViewController: UIViewController, UITableViewDataSource {
         
         let user = userList[indexPath.row]
         
+        cell.user = user
         cell.usernameLabel.text = user.username
         cell.idLabel.text = user.id
+        
+        NetworkManager.getAvatarForUser(user: user) { (image) in
+            if user.id == cell.user?.id {
+                cell.avatarImageView.image = image
+            }
+        }
         
         return cell
     }

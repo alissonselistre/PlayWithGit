@@ -60,7 +60,9 @@ class NetworkManager {
             var success = false
             
             defer {
-                completion(success)
+                DispatchQueue.main.sync {
+                    completion(success)
+                }
             }
             
             if error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -84,7 +86,9 @@ class NetworkManager {
             var user: User?
             
             defer {
-                completion(user)
+                DispatchQueue.main.sync {
+                    completion(user)
+                }
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -118,7 +122,9 @@ class NetworkManager {
             var followingList: [User] = []
             
             defer {
-                completion(followingList)
+                DispatchQueue.main.sync {
+                    completion(followingList)
+                }
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -156,7 +162,9 @@ class NetworkManager {
             var followingList: [User] = []
             
             defer {
-                completion(followingList)
+                DispatchQueue.main.sync {
+                    completion(followingList)
+                }
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -189,7 +197,7 @@ class NetworkManager {
             return
         }
         
-        if let image = NetworkManager.cache.object(forKey: user.id as NSString) {
+        if let image = NetworkManager.cache.object(forKey: user.avatarUrl as NSString) {
             completion(image)
         } else {
             executeRequest(url: url) { (data, response, error) in
@@ -197,12 +205,14 @@ class NetworkManager {
                 var image: UIImage?
                 
                 defer {
-                    completion(image)
+                    DispatchQueue.main.sync {
+                        completion(image)
+                    }
                 }
                 
                 if let data = data, let downloadedImage = UIImage(data: data), (response as? HTTPURLResponse)?.statusCode == 200 {
                     image = downloadedImage
-                    NetworkManager.cache.setObject(downloadedImage, forKey: user.id as NSString)
+                    NetworkManager.cache.setObject(downloadedImage, forKey: user.avatarUrl as NSString)
                 } else {
                     print("Error downloading image with url: \(url.absoluteString)")
                 }
@@ -223,7 +233,9 @@ class NetworkManager {
             var repositoriesList: [Repository] = []
             
             defer {
-                completion(repositoriesList)
+                DispatchQueue.main.sync {
+                    completion(repositoriesList)
+                }
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
