@@ -221,21 +221,44 @@
                                     <outlet property="delegate" destination="oai-nF-qiG" id="uJh-Hf-gUh"/>
                                 </connections>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="08U-V4-XDp">
+                                <rect key="frame" x="16" y="629" width="343" height="30"/>
+                                <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Jc4-Hd-5UQ"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
+                                <state key="normal" title="LOGIN WITH DEFAULT USER">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="loginDefaultUserButtonPressed:" destination="oai-nF-qiG" eventType="touchUpInside" id="gIt-pS-fcg"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="0.9539981723930181" blue="0.93887247903787374" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="U7K-Vq-WQf" firstAttribute="centerX" secondItem="R1T-xF-DdW" secondAttribute="centerX" id="8YU-fY-FKo"/>
                             <constraint firstItem="vqO-al-5AM" firstAttribute="top" secondItem="44g-uO-esd" secondAttribute="bottom" constant="8" id="9eh-xi-cbu"/>
                             <constraint firstItem="44g-uO-esd" firstAttribute="top" secondItem="U7K-Vq-WQf" secondAttribute="bottom" constant="8" id="BrR-TP-wan"/>
+                            <constraint firstItem="A4D-y8-At9" firstAttribute="top" secondItem="08U-V4-XDp" secondAttribute="bottom" constant="8" id="G1w-nR-beG"/>
                             <constraint firstItem="vqO-al-5AM" firstAttribute="leading" secondItem="R1T-xF-DdW" secondAttribute="leadingMargin" id="GaF-Xv-neI"/>
                             <constraint firstItem="44g-uO-esd" firstAttribute="trailing" secondItem="R1T-xF-DdW" secondAttribute="trailingMargin" id="GaR-O3-sCh"/>
                             <constraint firstItem="vqO-al-5AM" firstAttribute="trailing" secondItem="R1T-xF-DdW" secondAttribute="trailingMargin" id="SEd-RX-eA1"/>
                             <constraint firstItem="PkS-CO-bgi" firstAttribute="top" secondItem="vqO-al-5AM" secondAttribute="bottom" constant="8" id="WtV-Qb-Rgb"/>
+                            <constraint firstItem="08U-V4-XDp" firstAttribute="leading" secondItem="R1T-xF-DdW" secondAttribute="leadingMargin" id="XRX-ww-T0Q"/>
                             <constraint firstItem="vqO-al-5AM" firstAttribute="centerY" secondItem="R1T-xF-DdW" secondAttribute="centerY" id="c99-jE-AEN"/>
                             <constraint firstItem="44g-uO-esd" firstAttribute="leading" secondItem="R1T-xF-DdW" secondAttribute="leadingMargin" id="cuk-cR-eMX"/>
                             <constraint firstItem="PkS-CO-bgi" firstAttribute="leading" secondItem="R1T-xF-DdW" secondAttribute="leadingMargin" id="g5U-T3-zMv"/>
                             <constraint firstItem="U7K-Vq-WQf" firstAttribute="top" secondItem="4Bv-Ca-BTT" secondAttribute="bottom" constant="8" id="ncL-eL-jqs"/>
                             <constraint firstItem="PkS-CO-bgi" firstAttribute="trailing" secondItem="R1T-xF-DdW" secondAttribute="trailingMargin" id="pbT-5T-b5L"/>
+                            <constraint firstItem="08U-V4-XDp" firstAttribute="trailing" secondItem="R1T-xF-DdW" secondAttribute="trailingMargin" id="uOS-JB-qmd"/>
                         </constraints>
                     </view>
                     <connections>
@@ -305,6 +328,9 @@
                                                     <state key="normal" title="Follow">
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
+                                                    <connections>
+                                                        <action selector="followButtonPressed:" destination="Z9R-oT-Kpr" eventType="touchUpInside" id="euv-Xw-Yas"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -366,7 +392,6 @@
                     <nil name="viewControllers"/>
                     <connections>
                         <segue destination="eFf-mX-pey" kind="relationship" relationship="rootViewController" id="bGP-XP-vew"/>
-                        <segue destination="oai-nF-qiG" kind="presentation" identifier="LoginSegueIdentifier" id="hwn-cg-j5Y"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="k97-Pq-1mn" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -39,6 +39,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         tryLogin()
     }
     
+    @IBAction func loginDefaultUserButtonPressed(_ sender: UIButton) {
+        usernameTextField.text = "githubzin"
+        passwordTextField.text = "1234git"
+        tryLogin()
+    }
+    
     // helpers
     
     private func validateFields() -> Bool {
