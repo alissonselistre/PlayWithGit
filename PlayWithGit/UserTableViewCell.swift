@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol UserTableViewCellDelegate: class {
+    func followButtonPressed(in cell:UserTableViewCell)
+}
+
 class UserTableViewCell: UITableViewCell {
 
     @IBOutlet weak var avatarImageView: UIImageView!
@@ -15,7 +19,11 @@ class UserTableViewCell: UITableViewCell {
     @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var followButton: UIButton!
     
+    weak var delegate: UserTableViewCellDelegate?
+    
     var user: User?
+    
+    //MARK: view methods
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,5 +48,11 @@ class UserTableViewCell: UITableViewCell {
         avatarImageView.image = UIImage(named: "placeholder_profile")
         usernameLabel.text = "username"
         idLabel.text = ""
+    }
+    
+    //MARK: actions
+    
+    @IBAction func followButtonPressed(_ sender: Any) {
+        delegate?.followButtonPressed(in: self)
     }
 }

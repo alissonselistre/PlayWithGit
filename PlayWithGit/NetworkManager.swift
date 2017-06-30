@@ -38,8 +38,14 @@ class NetworkManager {
             }
         }
 
+        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        
         URLSession.shared.dataTask(with: request) { (data, response, error) in
+            
+            UIApplication.shared.isNetworkActivityIndicatorVisible = false
+            
             logRequest(request: request, response: response as? HTTPURLResponse, data: data, error: error)
+            
             completion(data, response, error)
         }.resume()
     }
