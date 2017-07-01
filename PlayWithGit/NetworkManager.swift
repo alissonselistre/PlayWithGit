@@ -46,23 +46,15 @@ class NetworkManager {
     
     private class func executeRequest(request: URLRequest, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
         
-        var request = request
+        let request = newAuthenticatedRequestBasedInRequet(request: request)
 
-        if let username = sessionUsername, let password = sessionPassword {
-            
-            let credentialsData = "\(username):\(password)".data(using: String.Encoding.utf8)
-            
-            if let credentialsInBase64 = credentialsData?.base64EncodedString(options: []) {
-                let authorization = "Basic \(credentialsInBase64)"
-                request.addValue(authorization, forHTTPHeaderField: "Authorization")
-            }
-        }
-
-        UIApplication.shared.isNetworkActivityIndicatorVisible = true
+        LoadingOverlay.show()
         URLSession.shared.dataTask(with: request) { (data, response, error) in
-            UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            logRequest(request: request, response: response as? HTTPURLResponse, data: data, error: error)
-            completion(data, response, error)
+            DispatchQueue.main.sync {
+                LoadingOverlay.hide()
+                logRequest(request: request, response: response as? HTTPURLResponse, data: data, error: error)
+                completion(data, response, error)
+            }
         }.resume()
     }
     
@@ -83,9 +75,7 @@ class NetworkManager {
             var success = false
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(success)
-                }
+                completion(success)
             }
             
             if error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -109,9 +99,7 @@ class NetworkManager {
             var user: User?
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(user)
-                }
+                completion(user)
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -143,9 +131,7 @@ class NetworkManager {
             var followingList: [User] = []
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(followingList)
-                }
+                completion(followingList)
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -181,9 +167,7 @@ class NetworkManager {
             var followingList: [User] = []
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(followingList)
-                }
+                completion(followingList)
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -222,24 +206,26 @@ class NetworkManager {
         if let image = NetworkManager.cache.object(forKey: user.avatarUrl as NSString) {
             completion(image)
         } else {
-            executeGETRequest(url: url) { (data, response, error) in
-                
-                var image: UIImage?
-                
-                defer {
-                    DispatchQueue.main.sync {
-                        completion(image)
+            
+            let request = newAuthenticatedRequestBasedInRequet(request: URLRequest(url: url))
+
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+
+                    var image: UIImage?
+                    
+                    defer {
+                        DispatchQueue.main.sync {
+                            completion(image)
+                        }
                     }
-                }
-                
-                if let data = data, let downloadedImage = UIImage(data: data), (response as? HTTPURLResponse)?.statusCode == 200 {
-                    image = downloadedImage
-                    NetworkManager.cache.setObject(downloadedImage, forKey: user.avatarUrl as NSString)
-                } else {
-                    print("Error downloading image with url: \(url.absoluteString)")
-                }
-                
-            }
+                    
+                    if let data = data, let downloadedImage = UIImage(data: data), (response as? HTTPURLResponse)?.statusCode == 200 {
+                        image = downloadedImage
+                        NetworkManager.cache.setObject(downloadedImage, forKey: user.avatarUrl as NSString)
+                    } else {
+                        print("Error downloading image with url: \(url.absoluteString)")
+                    }
+                }.resume()
         }
     }
     
@@ -255,9 +241,7 @@ class NetworkManager {
             var repositoriesList: [Repository] = []
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(repositoriesList)
-                }
+                completion(repositoriesList)
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
@@ -293,9 +277,7 @@ class NetworkManager {
             var success = false
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(success)
-                }
+                completion(success)
             }
             
             if error == nil && (response as? HTTPURLResponse)?.statusCode == 204 {
@@ -316,9 +298,7 @@ class NetworkManager {
             var success = false
             
             defer {
-                DispatchQueue.main.sync {
-                    completion(success)
-                }
+                completion(success)
             }
             
             if error == nil && (response as? HTTPURLResponse)?.statusCode == 204 {
@@ -373,5 +353,22 @@ class NetworkManager {
         }
         
         print("------------------------------")
+    }
+    
+    private class func newAuthenticatedRequestBasedInRequet(request: URLRequest) -> URLRequest {
+       
+        var request = request
+        
+        if let username = sessionUsername, let password = sessionPassword {
+            
+            let credentialsData = "\(username):\(password)".data(using: String.Encoding.utf8)
+            
+            if let credentialsInBase64 = credentialsData?.base64EncodedString(options: []) {
+                let authorization = "Basic \(credentialsInBase64)"
+                request.addValue(authorization, forHTTPHeaderField: "Authorization")
+            }
+        }
+        
+        return request
     }
 }

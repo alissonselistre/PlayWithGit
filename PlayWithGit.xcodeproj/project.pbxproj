@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		36F510C21F08551C00281623 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F510C11F08551C00281623 /* WebViewController.swift */; };
+		36F510C41F08619A00281623 /* LoadingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 36F510C31F08619A00281623 /* LoadingOverlay.swift */; };
 		3B156B9E1F02C85C00E79C42 /* UserDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B156B9D1F02C85C00E79C42 /* UserDetailViewController.swift */; };
 		3B156BA01F02C8F000E79C42 /* RepositoryTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B156B9F1F02C8F000E79C42 /* RepositoryTableViewCell.swift */; };
 		3B486A961F05734600577ED4 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B486A951F05734600577ED4 /* LoginViewController.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		36F510C11F08551C00281623 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		36F510C31F08619A00281623 /* LoadingOverlay.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingOverlay.swift; sourceTree = "<group>"; };
 		3B156B9D1F02C85C00E79C42 /* UserDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDetailViewController.swift; sourceTree = "<group>"; };
 		3B156B9F1F02C8F000E79C42 /* RepositoryTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RepositoryTableViewCell.swift; sourceTree = "<group>"; };
 		3B486A951F05734600577ED4 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -136,6 +138,7 @@
 				3B486A991F058DFB00577ED4 /* Alert.swift */,
 				3B486A9B1F05909F00577ED4 /* Extensions.swift */,
 				36F510C11F08551C00281623 /* WebViewController.swift */,
+				36F510C31F08619A00281623 /* LoadingOverlay.swift */,
 			);
 			path = PlayWithGit;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				3B486A981F0576CC00577ED4 /* Repository.swift in Sources */,
 				3B486A9A1F058DFB00577ED4 /* Alert.swift in Sources */,
 				3BDCDA651F013AA5001FD640 /* PlayWithGit.xcdatamodeld in Sources */,
+				36F510C41F08619A00281623 /* LoadingOverlay.swift in Sources */,
 				36F510C21F08551C00281623 /* WebViewController.swift in Sources */,
 				3BDCDA5D1F013AA5001FD640 /* AppDelegate.swift in Sources */,
 			);
