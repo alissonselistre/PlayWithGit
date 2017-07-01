@@ -339,7 +339,7 @@
                                                         <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     </state>
                                                     <connections>
-                                                        <action selector="followButtonPressed:" destination="Z9R-oT-Kpr" eventType="touchUpInside" id="euv-Xw-Yas"/>
+                                                        <action selector="followUnfollowButtonPressed:" destination="Z9R-oT-Kpr" eventType="touchUpInside" id="euv-Xw-Yas"/>
                                                     </connections>
                                                 </button>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LVc-6d-Sut" userLabel="f">
@@ -370,7 +370,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="avatarImageView" destination="q2V-KL-1XC" id="2jC-Io-I1I"/>
-                                            <outlet property="followButton" destination="6KZ-C2-Kml" id="Xh8-AM-Pcd"/>
+                                            <outlet property="followUnfollowButton" destination="6KZ-C2-Kml" id="Xh8-AM-Pcd"/>
                                             <outlet property="idLabel" destination="rBw-b9-gRB" id="7O8-Fz-xwi"/>
                                             <outlet property="usernameLabel" destination="h67-Te-QIb" id="wCP-QP-xtk"/>
                                         </connections>

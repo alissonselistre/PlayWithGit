@@ -29,3 +29,8 @@ extension UIApplication {
         return controller
     }
 }
+
+extension UIColor {
+    
+    static let customRed = UIColor.init(colorLiteralRed: 255/255, green: 102/255, blue: 102/255, alpha: 1)
+}

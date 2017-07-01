@@ -77,7 +77,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                         
                         if let user = user {
                             
-                            NetworkManager.loggedUser = user
+                            NetworkManager.sessionUser = user
+                            
+                            // get the following list of the logged user to obtain the correct status for the follow/unfollow button
+                            NetworkManager.getFollowingForUsername(username: username, completion: { (followingList) in
+                                
+                            })
                             
                             self.dismiss(animated: true, completion: nil)
                             

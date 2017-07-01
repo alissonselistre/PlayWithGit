@@ -35,8 +35,8 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         if needsToPopulateUI() {
             if let user = user {
                 getUserInformationAndUpdateUI(user: user)
-            } else if let loggedUser = NetworkManager.loggedUser {
-                getUserInformationAndUpdateUI(user: loggedUser)
+            } else if let sessionUser = NetworkManager.sessionUser {
+                getUserInformationAndUpdateUI(user: sessionUser)
             }
         }
     }
@@ -67,7 +67,7 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
                 if followers.count > 0 {
                     self.performSegue(withIdentifier: "UserListSegueIdentifier", sender: followers)
                 } else {
-                    Alert.showMessage(title: nil, message: "There is no followers to show =(")
+                    Alert.showMessage(title: nil, message: "There is no follower to show =(")
                 }
             }
         }

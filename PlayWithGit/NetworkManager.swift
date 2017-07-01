@@ -18,16 +18,36 @@ class NetworkManager {
     
     //MARK: public vars
     
+    // these vars are simulating a persistence in Keychain
+    // (it's sad I know, but remember, this app is just for academic purposes =P)
     static var sessionUsername: String?
     static var sessionPassword: String?
-    static var loggedUser: User?
+    
+    static var sessionUser: User?
     
     //MARK: private network methods
     
-    private class func executeRequest(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        
+    private class func executeGETRequest(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        let request = URLRequest(url: url)
+        executeRequest(request: request, completion: completion)
+    }
+    
+    private class func executePUTRequest(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
         var request = URLRequest(url: url)
+        request.httpMethod = "PUT"
+        executeRequest(request: request, completion: completion)
+    }
+    
+    private class func executeDELETERequest(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        executeRequest(request: request, completion: completion)
+    }
+    
+    private class func executeRequest(request: URLRequest, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
         
+        var request = request
+
         if let username = sessionUsername, let password = sessionPassword {
             
             let credentialsData = "\(username):\(password)".data(using: String.Encoding.utf8)
@@ -39,13 +59,9 @@ class NetworkManager {
         }
 
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
         URLSession.shared.dataTask(with: request) { (data, response, error) in
-            
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
-            
             logRequest(request: request, response: response as? HTTPURLResponse, data: data, error: error)
-            
             completion(data, response, error)
         }.resume()
     }
@@ -62,7 +78,7 @@ class NetworkManager {
         sessionUsername = username
         sessionPassword = password
         
-        executeRequest(url: url) { (data, response, error) in
+        executeGETRequest(url: url) { (data, response, error) in
             
             var success = false
             
@@ -88,7 +104,7 @@ class NetworkManager {
             return
         }
         
-        executeRequest(url: url) { (data, response, error) in
+        executeGETRequest(url: url) { (data, response, error) in
             
             var user: User?
             
@@ -122,7 +138,7 @@ class NetworkManager {
             return
         }
         
-        executeRequest(url: url) { (data, response, error) in
+        executeGETRequest(url: url) { (data, response, error) in
             
             var followingList: [User] = []
             
@@ -160,7 +176,7 @@ class NetworkManager {
             return
         }
         
-        executeRequest(url: url) { (data, response, error) in
+        executeGETRequest(url: url) { (data, response, error) in
             
             var followingList: [User] = []
             
@@ -184,6 +200,11 @@ class NetworkManager {
                         followingList.append(user)
                     }
                     
+                    // if the request was for the logged user, persists this list to be used to define the status of the button follow/unfollow
+                    if username == sessionUsername && followingList.count > 0 {
+                        NetworkManager.sessionUser?.followingList = followingList
+                    }
+                    
                 } catch {
                     print("Error when parsing the JSON: \(error)")
                 }
@@ -201,7 +222,7 @@ class NetworkManager {
         if let image = NetworkManager.cache.object(forKey: user.avatarUrl as NSString) {
             completion(image)
         } else {
-            executeRequest(url: url) { (data, response, error) in
+            executeGETRequest(url: url) { (data, response, error) in
                 
                 var image: UIImage?
                 
@@ -229,7 +250,7 @@ class NetworkManager {
             return
         }
         
-        executeRequest(url: url) { (data, response, error) in
+        executeGETRequest(url: url) { (data, response, error) in
             
             var repositoriesList: [Repository] = []
             
@@ -260,6 +281,52 @@ class NetworkManager {
         }
     }
     
+    class func followUser(username: String, completion: @escaping (_ success: Bool) -> Void) {
+        
+        guard let url = URL(string: "\(BASE_URL)/user/following/\(username)") else {
+            completion(false)
+            return
+        }
+        
+        executePUTRequest(url: url) { (data, response, error) in
+
+            var success = false
+            
+            defer {
+                DispatchQueue.main.sync {
+                    completion(success)
+                }
+            }
+            
+            if error == nil && (response as? HTTPURLResponse)?.statusCode == 204 {
+                success = true
+            }
+        }
+    }
+    
+    class func unfollowUser(username: String, completion: @escaping (_ success: Bool) -> Void) {
+        
+        guard let url = URL(string: "\(BASE_URL)/user/following/\(username)") else {
+            completion(false)
+            return
+        }
+        
+        executeDELETERequest(url: url) { (data, response, error) in
+            
+            var success = false
+            
+            defer {
+                DispatchQueue.main.sync {
+                    completion(success)
+                }
+            }
+            
+            if error == nil && (response as? HTTPURLResponse)?.statusCode == 204 {
+                success = true
+            }
+        }
+    }
+    
     //MARK: helpers
     
     class func isLoginRequired() -> Bool {
@@ -267,7 +334,7 @@ class NetworkManager {
         return loginRequired
     }
     
-    class func logRequest(request: URLRequest, response: HTTPURLResponse?, data: Data?, error: Error?) {
+    private class func logRequest(request: URLRequest, response: HTTPURLResponse?, data: Data?, error: Error?) {
         
         let urlString = request.url?.absoluteString ?? ""
         let httpMethod = request.httpMethod ?? ""

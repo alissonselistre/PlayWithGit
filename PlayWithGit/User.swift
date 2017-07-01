@@ -14,6 +14,7 @@ struct User {
     var username = ""
     var avatarUrl = ""
     var repositoriesUrl = ""
+    var followingList: [User] = []
     
     mutating func populateWithDict(dict: [String: Any]) {
         

@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class UserListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UserTableViewCellDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
@@ -43,12 +43,14 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "UserCellIdentifier", for: indexPath) as! UserTableViewCell
+        cell.delegate = self
         
         let user = userList[indexPath.row]
         
         cell.user = user
         cell.usernameLabel.text = user.username
         cell.idLabel.text = user.id
+        cell.updateFollowUnfollowButtonStatus()
         
         NetworkManager.getAvatarForUser(user: user) { (image) in
             if user.id == cell.user?.id {
@@ -64,6 +66,26 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let user = userList[indexPath.row]
         performSegue(withIdentifier: "UserDetailSegueIdentifier", sender: user)
+    }
+    
+    //MARK: UserTableViewCellDelegate
+    
+    func followButtonPressed(in cell: UserTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let user = userList[indexPath.row]
+        
+        NetworkManager.followUser(username: user.username) { (success) in
+            Alert.showSuccessMessage(message: "You are now following \(user.username).")
+        }
+    }
+    
+    func unfollowButtonPressed(in cell: UserTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let user = userList[indexPath.row]
+        
+        NetworkManager.unfollowUser(username: user.username) { (success) in
+            Alert.showSuccessMessage(message: "You are not following \(user.username) anymore.")
+        }
     }
 }
 
