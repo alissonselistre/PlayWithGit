@@ -64,7 +64,7 @@
                                 <rect key="frame" x="16" y="271" width="343" height="396"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="RepositoryCellIdentifier" id="ROC-Y2-dfI" customClass="RepositoryTableViewCell" customModule="PlayWithGit" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="RepositoryCellIdentifier" id="ROC-Y2-dfI" customClass="RepositoryTableViewCell" customModule="PlayWithGit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="343" height="140"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ROC-Y2-dfI" id="AbF-8U-o4V">
@@ -279,6 +279,60 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ZWB-KB-soq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="952.79999999999995" y="114.69265367316342"/>
+        </scene>
+        <!--Web View Controller-->
+        <scene sceneID="lxv-w7-2x6">
+            <objects>
+                <viewController storyboardIdentifier="WebViewController" id="Hn5-Xf-a2b" customClass="WebViewController" customModule="PlayWithGit" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="E5t-qn-0VF"/>
+                        <viewControllerLayoutGuide type="bottom" id="3kl-dx-1kD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ArG-PD-fw0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1mC-Br-sNs">
+                                <rect key="frame" x="16" y="64" width="343" height="559"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </webView>
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pb7-Ib-AaM">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="44" id="c1t-nJ-0MN"/>
+                                </constraints>
+                                <items>
+                                    <navigationItem id="Mkt-n4-b9u">
+                                        <barButtonItem key="leftBarButtonItem" title="Dismiss" id="6zT-o9-gFx">
+                                            <connections>
+                                                <action selector="dismissButtonPressed:" destination="Hn5-Xf-a2b" id="pAF-9H-iYp"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="1mC-Br-sNs" secondAttribute="trailing" id="ITe-VF-HIR"/>
+                            <constraint firstItem="pb7-Ib-AaM" firstAttribute="leading" secondItem="ArG-PD-fw0" secondAttribute="leading" id="R3e-9x-i9D"/>
+                            <constraint firstItem="pb7-Ib-AaM" firstAttribute="top" secondItem="E5t-qn-0VF" secondAttribute="bottom" id="VOo-mR-JAM"/>
+                            <constraint firstAttribute="trailing" secondItem="pb7-Ib-AaM" secondAttribute="trailing" id="Xgq-SP-ZyJ"/>
+                            <constraint firstItem="1mC-Br-sNs" firstAttribute="leading" secondItem="ArG-PD-fw0" secondAttribute="leadingMargin" id="lcT-Mb-awy"/>
+                            <constraint firstItem="3kl-dx-1kD" firstAttribute="top" secondItem="1mC-Br-sNs" secondAttribute="bottom" id="pZ8-8R-Amp"/>
+                            <constraint firstItem="1mC-Br-sNs" firstAttribute="top" secondItem="pb7-Ib-AaM" secondAttribute="bottom" id="ugx-7S-xQN"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="customNavigationItem" destination="Mkt-n4-b9u" id="bkd-8I-mw0"/>
+                        <outlet property="webView" destination="1mC-Br-sNs" id="3r4-vh-XCA"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P8S-Zq-JAr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1736.8" y="114.69265367316342"/>
         </scene>
         <!--User List View Controller-->
         <scene sceneID="tne-QT-ifu">

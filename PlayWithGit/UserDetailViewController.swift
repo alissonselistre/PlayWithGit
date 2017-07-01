@@ -8,7 +8,7 @@
 
 import UIKit
 
-class UserDetailViewController: UIViewController, UITableViewDataSource {
+class UserDetailViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var avatarImageView: UIImageView!
     @IBOutlet weak var usernameLabel: UILabel!
@@ -109,6 +109,13 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         return cell
     }
     
+    //MARK: UITableViewDelegate
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let repository = repositories[indexPath.row]
+        showRepository(repository: repository)
+    }
+    
     //MARK: helpers
     
     private func getUserInformationAndUpdateUI(user: User) {
@@ -138,6 +145,14 @@ class UserDetailViewController: UIViewController, UITableViewDataSource {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let loginViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
         present(loginViewController, animated: false, completion: nil)
+    }
+    
+    private func showRepository(repository: Repository) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        guard let webViewController = storyboard.instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else { return }
+        webViewController.customTitle = repository.name
+        webViewController.url = URL(string: repository.url)
+        present(webViewController, animated: true, completion: nil)
     }
     
     private func showUserListView(userList: [User]) {

@@ -14,6 +14,7 @@ struct Repository {
     var name = ""
     var description = ""
     var language = ""
+    var url = ""
     
     mutating func populateWithDict(dict: [String: Any]) {
         
@@ -24,5 +25,6 @@ struct Repository {
         name = dict["name"] as? String ?? ""
         description = dict["description"] as? String ?? ""
         language = dict["language"] as? String ?? ""
+        url = dict["html_url"] as? String ?? ""
     }
 }
