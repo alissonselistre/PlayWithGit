@@ -151,7 +151,7 @@ class UserDetailViewController: UIViewController, UITableViewDataSource, UITable
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         guard let webViewController = storyboard.instantiateViewController(withIdentifier: "WebViewController") as? WebViewController else { return }
         webViewController.customTitle = repository.name
-        webViewController.url = URL(string: repository.url)
+        webViewController.url = repository.url
         present(webViewController, animated: true, completion: nil)
     }
     

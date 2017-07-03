@@ -107,10 +107,7 @@ class NetworkManager {
                 do {
                     
                     let json = try JSONSerialization.jsonObject(with: data) as! [String: Any]
-
-                    var newUser = User()
-                    newUser.populateWithDict(dict: json)
-                    user = newUser
+                    user = User(dict: json)
                     
                 } catch {
                     print("Error when parsing the JSON: \(error)")
@@ -135,19 +132,10 @@ class NetworkManager {
             }
             
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
-                
                 do {
-                    
                     let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
-
-                    for userDict in json {
-                        
-                        var user = User()
-                        user.populateWithDict(dict: userDict)
-                        
-                        followingList.append(user)
-                    }
-                    
+                    let users = json.flatMap(User.init)
+                    followingList.append(contentsOf: users)
                 } catch {
                     print("Error when parsing the JSON: \(error)")
                 }
@@ -176,13 +164,8 @@ class NetworkManager {
                     
                     let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
 
-                    for userDict in json {
-                        
-                        var user = User()
-                        user.populateWithDict(dict: userDict)
-                        
-                        followingList.append(user)
-                    }
+                    let users = json.flatMap(User.init)
+                    followingList.append(contentsOf: users)
                     
                     // if the request was for the logged user, persists this list to be used to define the status of the button follow/unfollow
                     if username == sessionUsername && followingList.count > 0 {
@@ -230,13 +213,8 @@ class NetworkManager {
     }
     
     class func getRepositoriesForUser(user: User, completion: @escaping ([Repository]) -> Void) {
-        
-        guard let url = URL(string: user.repositoriesUrl) else {
-            completion([])
-            return
-        }
-        
-        executeGETRequest(url: url) { (data, response, error) in
+
+        executeGETRequest(url: user.repositoriesUrl) { (data, response, error) in
             
             var repositoriesList: [Repository] = []
             
@@ -247,17 +225,9 @@ class NetworkManager {
             if let data = data, error == nil, (response as? HTTPURLResponse)?.statusCode == 200 {
                 
                 do {
-                    
                     let json = try JSONSerialization.jsonObject(with: data) as! [[String: Any]]
-                    
-                    for RepoDict in json {
-                        
-                        var repository = Repository()
-                        repository.populateWithDict(dict: RepoDict)
-                        
-                        repositoriesList.append(repository)
-                    }
-                    
+                    let repos = json.flatMap(Repository.init)
+                    repositoriesList.append(contentsOf: repos)
                 } catch {
                     print("Error when parsing the JSON: \(error)")
                 }

@@ -49,7 +49,7 @@ class UserListViewController: UIViewController, UITableViewDataSource, UITableVi
         
         cell.user = user
         cell.usernameLabel.text = user.username
-        cell.idLabel.text = user.id
+        cell.idLabel.text = user.id.stringValue
         cell.updateFollowUnfollowButtonStatus()
         
         NetworkManager.getAvatarForUser(user: user) { (image) in
