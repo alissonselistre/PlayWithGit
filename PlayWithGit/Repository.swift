@@ -10,21 +10,25 @@ import UIKit
 
 struct Repository {
     
-    var id = ""
-    var name = ""
-    var description = ""
-    var language = ""
-    var url = ""
+    let id: NSNumber
+    let name: String
+    let description: String
+    let language: String
+    let url: URL
     
-    mutating func populateWithDict(dict: [String: Any]) {
-        
-        if let id = dict["id"] as? NSNumber {
-            self.id = id.stringValue
+    init?(dict: [String: Any]) {
+        guard let repoId = dict["id"] as? NSNumber,
+            let name = dict["name"] as? String,
+            let description = dict["description"] as? String,
+            let language = dict["language"] as? String,
+            let urlString = dict["html_url"] as? String,
+            let url = URL(string: urlString) else {
+                return nil
         }
-        
-        name = dict["name"] as? String ?? ""
-        description = dict["description"] as? String ?? ""
-        language = dict["language"] as? String ?? ""
-        url = dict["html_url"] as? String ?? ""
+        self.id = repoId
+        self.name = name
+        self.description = description
+        self.language = language
+        self.url = url
     }
 }
