@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WebViewController: UIViewController {
+class WebViewController: UIViewController, UIWebViewDelegate {
 
     @IBOutlet weak var webView: UIWebView!
     @IBOutlet weak var customNavigationItem: UINavigationItem!
@@ -21,6 +21,8 @@ class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        webView.delegate = self
+        
         if let url = url {
             webView.loadRequest(URLRequest(url: url))
         }
@@ -32,5 +34,15 @@ class WebViewController: UIViewController {
     
     @IBAction func dismissButtonPressed(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: UIWebViewDelegate
+    
+    func webViewDidStartLoad(_ webView: UIWebView) {
+        LoadingOverlay.show()
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        LoadingOverlay.hide()
     }
 }
